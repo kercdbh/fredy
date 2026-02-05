@@ -4,7 +4,7 @@
  */
 
 import fs from 'fs';
-import { checkIfConfigIsAccessible, getProviders, refreshConfig } from './lib/utils.js';
+import { checkIfConfigIsAccessible, getProviders, normalizeBaseUrl, refreshConfig } from './lib/utils.js';
 import * as similarityCache from './lib/services/similarity-check/similarityCache.js';
 import { runMigrations } from './lib/services/storage/migrations/migrate.js';
 import { ensureDemoUserExists, ensureAdminUserExists } from './lib/services/storage/userStorage.js';
@@ -62,7 +62,9 @@ await initTrackerCron();
 initActiveCheckerCron();
 initGeocodingCron();
 
-logger.info(`Started Fredy successfully. Ui can be accessed via http://localhost:${settings.port}`);
+const baseUrl = normalizeBaseUrl(settings.baseUrl);
+const uiUrl = baseUrl ? `http://localhost:${settings.port}${baseUrl}` : `http://localhost:${settings.port}`;
+logger.info(`Started Fredy successfully. Ui can be accessed via ${uiUrl}`);
 
 // Initialize the lean Job Execution Service (schedules and bus listeners)
 initJobExecutionService({ providers, settings, intervalMs: INTERVAL });

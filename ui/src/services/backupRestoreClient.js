@@ -3,6 +3,8 @@
  * Licensed under Apache-2.0 with Commons Clause and Attribution/Naming Clause
  */
 
+import { apiUrl } from './apiBase.js';
+
 /**
  * Lightweight client for Backup & Restore interactions with the backend.
  *
@@ -27,7 +29,7 @@ export class BackupRestoreClient {
    * @returns {Promise<void>}
    */
   static async downloadBackup() {
-    const resp = await fetch('/api/admin/backup', { credentials: 'include' });
+    const resp = await fetch(apiUrl('/api/admin/backup'), { credentials: 'include' });
     if (!resp.ok) throw new Error('Failed to create backup');
     const blob = await resp.blob();
     const fileName = extractFileNameFromDisposition(resp.headers.get('Content-Disposition'));
@@ -47,7 +49,7 @@ export class BackupRestoreClient {
    * @returns {Promise<{compatible:boolean,severity:string,message:string,backupMigration:number|null,requiredMigration:number,fredyVersion?:string|null}>>}
    */
   static async precheckRestore(file) {
-    const resp = await fetch('/api/admin/backup/restore?dryRun=true', {
+    const resp = await fetch(apiUrl('/api/admin/backup/restore?dryRun=true'), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/zip' },
@@ -63,7 +65,7 @@ export class BackupRestoreClient {
    * @returns {Promise<{restored:true,warning:string|null,details:any}>}
    */
   static async restore(file, force) {
-    const resp = await fetch(`/api/admin/backup/restore?force=${force ? 'true' : 'false'}`, {
+    const resp = await fetch(apiUrl(`/api/admin/backup/restore?force=${force ? 'true' : 'false'}`), {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/zip' },

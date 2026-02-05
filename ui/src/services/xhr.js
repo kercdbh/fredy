@@ -3,6 +3,8 @@
  * Licensed under Apache-2.0 with Commons Clause and Attribution/Naming Clause
  */
 
+import { apiUrl } from './apiBase.js';
+
 /**
  * post something to our backend.
  *
@@ -12,7 +14,7 @@
  * @returns {Promise}
  */
 export function xhrPost(url, data, contentType = 'application/json; charset=utf-8', isJson = true) {
-  return executePostOrPutCall(url, contentType, data, isJson, true);
+  return executePostOrPutCall(apiUrl(url), contentType, data, isJson, true);
 }
 /**
  * put request to backend.
@@ -23,7 +25,7 @@ export function xhrPost(url, data, contentType = 'application/json; charset=utf-
  * @returns {Promise}
  */
 export function xhrPut(url, data, contentType = 'application/json; charset=utf-8', isJson = true) {
-  return executePostOrPutCall(url, contentType, data, isJson, false);
+  return executePostOrPutCall(apiUrl(url), contentType, data, isJson, false);
 }
 function executePostOrPutCall(url, contentType, data, isJson, isPost) {
   return new Promise((resolve, reject) => {
@@ -63,7 +65,7 @@ function executePostOrPutCall(url, contentType, data, isJson, isPost) {
  */
 export function xhrGet(url, contentType = 'application/json; charset=utf-8', isJson = true) {
   return new Promise((resolve, reject) => {
-    fetch(url, {
+    fetch(apiUrl(url), {
       credentials: 'include',
       mode: 'cors',
       headers: {
@@ -95,7 +97,7 @@ export function xhrGet(url, contentType = 'application/json; charset=utf-8', isJ
  */
 export function xhrDelete(url, data, contentType = 'application/json; charset=utf-8') {
   return new Promise((resolve, reject) => {
-    fetch(url, {
+    fetch(apiUrl(url), {
       method: 'DELETE',
       credentials: 'include',
       mode: 'cors',

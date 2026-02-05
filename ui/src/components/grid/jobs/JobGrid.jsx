@@ -38,6 +38,7 @@ import { useNavigate } from 'react-router-dom';
 import ListingDeletionModal from '../../ListingDeletionModal.jsx';
 import { useActions, useSelector } from '../../../services/state/store.js';
 import { xhrDelete, xhrPut, xhrPost } from '../../../services/xhr.js';
+import { apiUrl } from '../../../services/apiBase.js';
 import debounce from 'lodash/debounce';
 import { IllustrationNoResult, IllustrationNoResultDark } from '@douyinfe/semi-illustrations';
 
@@ -85,7 +86,7 @@ const JobGrid = () => {
   // SSE connection for live job status updates
   useEffect(() => {
     // establish SSE connection
-    const src = new EventSource('/api/jobs/events');
+    const src = new EventSource(apiUrl('/api/jobs/events'));
     evtSourceRef.current = src;
 
     const onJobStatus = (e) => {

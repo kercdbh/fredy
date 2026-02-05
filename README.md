@@ -107,6 +107,18 @@ yarn run start:frontend  # in another terminal
 
 👉 Open <http://localhost:9998>
 
+### Serving Behind a Base Path
+
+If you want to serve Fredy under a path prefix (e.g. `/fredy`), set `baseUrl` in `conf/config.json`:
+
+```json
+{"sqlitepath":"/db","baseUrl":"/fredy"}
+```
+
+Then access the UI at `http://<host>:9998/fredy`.
+
+When using an ingress or reverse proxy, forward the path prefix without rewriting it so that `/fredy` and `/fredy/api/...` reach the app.
+
 ### With Unraid
 
 Should you use [Unraid](https://unraid.net/), you can now install Fredy from the community store :)
